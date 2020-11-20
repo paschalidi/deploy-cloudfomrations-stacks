@@ -21,7 +21,7 @@ jobs:
 
       - name: Copy files to the test website with the AWS CLI
         run: |
-          aws s3 sync . s3://my-s3-test-website-bucket
+          aws s3 sync . s3://pipeline-from-github-to-amplify
 
       - name: Configure environment name
         id: env-name
@@ -33,7 +33,6 @@ jobs:
           echo "::set-output name=environment::$ENVIRONMENT"
 
       - name: Deploy to Amplify Console with CloudFormation
-          id: amplify-stack
           uses: aws-actions/aws-cloudformation-github-deploy@v1
           with:
             name: ${{ steps.env-name.outputs.environment }}
