@@ -40,10 +40,13 @@ jobs:
             Repository=https://github.com/${{ github.repository }},
             OauthToken=${{ secrets.AMPLIFY_TOKEN }}
 
-      # When a domain is configured to the stack,
-      # it gets configured in the environment and printed to the console.
-      - name: Print default domain
+      - name: Deploy message
+        if: success()
+        uses: unsplash/comment-on-pr@master
         env:
-          DefaultDomain: ${{ steps.amplify-stack.outputs.DefaultDomain }}
-        run: |
-          echo "Default Domain: $DefaultDomain"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            Deploy preview ready!
+            ${{ steps.amplify-stack.outputs.DefaultDomain }}
+            built from ${{ github.sha }}
