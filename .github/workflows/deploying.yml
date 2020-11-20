@@ -28,6 +28,13 @@ jobs:
           echo "Environment name: $ENVIRONMENT"
           echo "::set-output name=environment::$ENVIRONMENT"
 
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Check output
+        run: echo ${{ steps.vars.outputs.short_ref }}
+
       - name: Deploy to Amplify Console with CloudFormation
         id: amplify-stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
@@ -39,7 +46,7 @@ jobs:
             Name=${{ steps.env-name.outputs.environment }},
             Repository=https://github.com/${{ github.repository }},
             OauthToken=${{ secrets.AMPLIFY_TOKEN }},
-            Branch=${{ github.ref }}
+            Branch=${{ steps.vars.outputs.short_ref }}
 
       - name: Deploy message
         if: success()
