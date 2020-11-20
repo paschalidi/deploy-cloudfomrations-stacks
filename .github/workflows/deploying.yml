@@ -29,7 +29,6 @@ jobs:
           echo "Environment name: $ENVIRONMENT"
           echo "::set-output name=environment::$ENVIRONMENT"
 
-
       - name: Deploy to Amplify Console with CloudFormation
         id: amplify-stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
@@ -49,3 +48,4 @@ jobs:
           DefaultDomain: ${{ steps.amplify-stack.outputs.DefaultDomain }}
         run: |
           echo "Default Domain: $DefaultDomain"
+---
