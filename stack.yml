@@ -59,7 +59,7 @@ Resources:
   AmplifyBranch:
     Type: AWS::Amplify::Branch
     Properties:
-      BranchName: !Ref Branch
+      BranchName: !Ref BranchName
       AppId: !GetAtt AmplifyApp.AppId
       EnableAutoBuild: true
 
