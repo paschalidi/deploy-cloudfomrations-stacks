@@ -1,27 +1,23 @@
----
-name: Deploy Preview
+name: PR Preview
 
 on: pull_request
 
 jobs:
   deploy:
-    name: Upload to Amazon S3
+    name: PR Preview with AWS Amplify
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials from Test account
+      - name: Configure AWS credentials
+        id: creds
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-      - name: Copy files to the test website with the AWS CLI
-        run: |
-          aws s3 sync . s3://my-s3-test-website-bucket
 
       - name: Configure environment name
         id: env-name
@@ -33,20 +29,21 @@ jobs:
           echo "::set-output name=environment::$ENVIRONMENT"
 
       - name: Deploy to Amplify Console with CloudFormation
-          id: amplify-stack
-          uses: aws-actions/aws-cloudformation-github-deploy@v1
-          with:
-            name: ${{ steps.env-name.outputs.environment }}
-            template: stack.yaml
-            no-fail-on-empty-changeset: "1"
-            parameter-overrides: >-
-              Name=${{ steps.env-name.outputs.environment }},
-              Repository=https://github.com/${{ github.repository }},
-              OauthToken=${{ secrets.AMPLIFY_TOKEN }},
+        id: amplify-stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: ${{ steps.env-name.outputs.environment }}
+          template: stack.yml
+          no-fail-on-empty-changeset: "1"
+          parameter-overrides: >-
+            Name=${{ steps.env-name.outputs.environment }},
+            Repository=https://github.com/${{ github.repository }},
+            OauthToken=${{ secrets.AMPLIFY_TOKEN }}
 
+      # When a domain is configured to the stack,
+      # it gets configured in the environment and printed to the console.
       - name: Print default domain
         env:
           DefaultDomain: ${{ steps.amplify-stack.outputs.DefaultDomain }}
         run: |
           echo "Default Domain: $DefaultDomain"
----
