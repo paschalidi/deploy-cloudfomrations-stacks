@@ -12,6 +12,7 @@ Parameters:
   Branch:
     Type: String
     Description: Github Repository Branch
+    Default: !Ref BranchName
 
   OauthToken:
     Type: String
@@ -59,7 +60,7 @@ Resources:
   AmplifyBranch:
     Type: AWS::Amplify::Branch
     Properties:
-      BranchName: !Ref BranchName
+      BranchName: !Ref Branch
       AppId: !GetAtt AmplifyApp.AppId
       EnableAutoBuild: true
 
@@ -70,7 +71,7 @@ Resources:
       DomainName: !Ref Domain
       AppId: !GetAtt AmplifyApp.AppId
       SubDomainSettings:
-        - Prefix: ''
+        - Prefix: master
           BranchName: !GetAtt AmplifyBranch.BranchName
 
 Outputs:
