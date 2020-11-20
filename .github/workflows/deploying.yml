@@ -1,11 +1,11 @@
 ---
-name: Deploy Preview
+name: PR Preview
 
 on: pull_request
 
 jobs:
   deploy:
-    name: Upload to Amazon S3
+    name: PR Preview with AWS Amplify
     runs-on: ubuntu-latest
 
     steps:
@@ -40,8 +40,7 @@ jobs:
           parameter-overrides: >-
             Name=${{ steps.env-name.outputs.environment }},
             Repository=https://github.com/${{ github.repository }},
-            OauthToken=${{ secrets.AMPLIFY_TOKEN }},
-            Domain=${{ secrets.AMPLIFY_DOMAIN }}
+            OauthToken=${{ secrets.AMPLIFY_TOKEN }}
 
       # When a domain is configured to the stack,
       # it gets configured in the environment and printed to the console.
