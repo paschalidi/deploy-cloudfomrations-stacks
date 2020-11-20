@@ -47,5 +47,3 @@ jobs:
           DefaultDomain: ${{ steps.amplify-stack.outputs.DefaultDomain }}
         run: |
           echo "Default Domain: $DefaultDomain"
-
----
