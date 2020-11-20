@@ -12,7 +12,6 @@ Parameters:
   Branch:
     Type: String
     Description: Github Repository Branch
-    Default: ""
 
   OauthToken:
     Type: String

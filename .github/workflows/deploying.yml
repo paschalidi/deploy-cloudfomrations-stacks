@@ -39,7 +39,7 @@ jobs:
             Name=${{ steps.env-name.outputs.environment }},
             Repository=https://github.com/${{ github.repository }},
             OauthToken=${{ secrets.AMPLIFY_TOKEN }},
-            BranchName=${{ github.ref }}
+            Branch=${{ github.ref }}
 
       - name: Deploy message
         if: success()
