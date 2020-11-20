@@ -28,10 +28,6 @@ jobs:
           echo "Environment name: $ENVIRONMENT"
           echo "::set-output name=environment::$ENVIRONMENT"
 
-      - name: Set output
-        id: vars
-        run: echo ::set-output name=short_ref::"cp/builds-from-all-the-branches"
-
       - name: Check output
         run: echo ${{ steps.vars.outputs.short_ref }}
 
@@ -46,7 +42,7 @@ jobs:
             Name=${{ steps.env-name.outputs.environment }},
             Repository=https://github.com/${{ github.repository }},
             OauthToken=${{ secrets.AMPLIFY_TOKEN }},
-            Branch=${{ steps.vars.outputs.short_ref }}
+            Branch=${{ github.event.pull_request.head.ref }}
 
       - name: Deploy message
         if: success()
