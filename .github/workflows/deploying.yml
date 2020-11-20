@@ -28,9 +28,6 @@ jobs:
           echo "Environment name: $ENVIRONMENT"
           echo "::set-output name=environment::$ENVIRONMENT"
 
-      - name: Check output
-        run: echo ${{ steps.vars.outputs.short_ref }}
-
       - name: Deploy to Amplify Console with CloudFormation
         id: amplify-stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
