@@ -16,6 +16,7 @@ function App() {
           rel="noopener noreferrer"
         >
           Deploy React!
+          And zeit can do it as well
         </a>
       </header>
     </div>
